@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Evan Applebaum — Mechatronics & Robotics Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --border: #1e1e2e;
+      --accent: #00e5ff;
+      --accent2: #ff4d6d;
+      --text: #e8e8f0;
+      --muted: #5a5a78;
+      --card: #13131d;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* NOISE OVERLAY */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.4;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 4rem;
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 6rem 4rem 4rem;
+      gap: 4rem;
+      position: relative;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 20%;
+      right: 10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(0,229,255,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-text { animation: fadeUp 0.8s ease both; }
+
+    .hero-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .hero-tag::before {
+      content: '';
+      display: block;
+      width: 2rem;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+
+    h1 span { color: var(--accent); }
+
+    .hero-subtitle {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 42ch;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.85rem 1.75rem;
+      border-radius: 2px;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: 700;
+    }
+
+    .btn-primary:hover {
+      background: #fff;
+      box-shadow: 0 0 30px rgba(0,229,255,0.3);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* HERO IMAGE */
+    .hero-image {
+      position: relative;
+      animation: fadeUp 0.8s 0.2s ease both;
+      overflow: hidden;
+      width: 100%;
+      max-width: 480px;
+      aspect-ratio: 3/4;
+      margin-left: auto;
+    }
+
+    .hero-image img {
+      width: 100%;
+      max-width: 480px;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      border-radius: 4px;
+      display: block;
+      margin-left: auto;
+      filter: grayscale(20%) contrast(1.05);
+    }
+
+    .hero-image::before {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border: 1px solid var(--accent);
+      border-radius: 4px;
+      opacity: 0.3;
+      transform: translate(8px, 8px);
+    }
+
+    /* IMAGE PLACEHOLDER */
+    .img-placeholder {
+      width: 100%;
+      max-width: 480px;
+      aspect-ratio: 3/4;
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-left: auto;
+      gap: 0.75rem;
+    }
+
+    .img-placeholder span {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
+    /* SECTIONS */
+    section {
+      padding: 6rem 4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 1rem;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+      max-width: 80px;
+    }
+
+    h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      margin-bottom: 3rem;
+      letter-spacing: -0.02em;
+    }
+
+    /* ABOUT */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .about-text p {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 2;
+      margin-bottom: 1.25rem;
+    }
+
+    .about-text p strong { color: var(--text); }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .skill-group h4 {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      padding: 0.3rem 0.6rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--text);
+      letter-spacing: 0.05em;
+    }
+
+    /* PROJECTS */
+    #projects { max-width: 1200px; }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+      cursor: pointer;
+    }
+
+    .project-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+    }
+
+    .project-card:hover .project-img img {
+      filter: grayscale(0%) contrast(1.1);
+    }
+
+    .project-img {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--surface);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .project-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      filter: grayscale(30%);
+      transition: filter 0.3s;
+    }
+
+    .project-img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .project-img-placeholder span {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
+    .project-content { padding: 1.5rem; }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+    }
+
+    .project-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      padding: 0.2rem 0.5rem;
+      background: rgba(0, 229, 255, 0.08);
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      color: var(--accent);
+      border-radius: 2px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .project-content h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.01em;
+      text-align: left;
+    }
+
+    .project-content p {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 1.25rem;
+    }
+
+    .project-links {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .project-link {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: opacity 0.2s;
+    }
+
+    .project-link:hover { opacity: 0.7; }
+
+    /* CONTACT */
+    #contact {
+      text-align: left;
+      padding: 6rem 4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    #contact p {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 2;
+      margin-bottom: 2.5rem;
+    }
+
+    .contact-links {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer span {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
+    /* GRID LINES ACCENT */
+    .grid-accent {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* TYPING CURSOR */
+    .cursor {
+      display: inline-block;
+      width: 3px;
+      height: 0.85em;
+      background: var(--accent);
+      margin-left: 4px;
+      vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .hero { grid-template-columns: 1fr; padding: 5rem 1.5rem 3rem; }
+      .hero-image { order: -1; }
+      .img-placeholder, .hero-image img { max-width: 100%; aspect-ratio: 4/3; }
+      section { padding: 4rem 1.5rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="grid-accent"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">EV.DEV</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-text">
+    <div class="hero-tag" style="font-size: 0.9rem;">Mechatronics & Robotics Engineer</div>
+    <h1>Evan<br><span>Applebaum</span></h1>
+    <p class="hero-subtitle">
+      Building at the intersection of hardware and software —
+      from custom motor controllers to autonomous robots.
+      Queen's University · Class of 2027.
+    </p>
+    <div class="hero-buttons">
+      <a href="#projects" class="btn btn-primary">View Projects</a>
+      <a href="#contact" class="btn btn-outline">Get In Touch</a>
+    </div>
+  </div>
+
+  
+  <div class="hero-image">
+    <img src="images/handsome-fella.jpeg" alt="Picture of me" style="object-position: center top;">
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">01 — About</div>
+  <h2>Who I Am</h2>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>
+        I'm a <strong>Mechatronics & Robotics Engineering student at Queen's University</strong>
+        with a hands-on focus on embedded systems, power electronics, and motor control.
+        I build things that move — and make them work reliably.
+      </p>
+      <p>
+        From designing 12S battery packs and VESC-based motor controllers to
+        implementing CAN telemetry and autonomous navigation stacks, I operate across
+        the full hardware-software stack.
+      </p>
+      <p>
+        I'm currently seeking internship and co-op opportunities in
+        <strong>robotics, embedded systems, or EV/power electronics</strong>.
+      </p>
+    </div>
+    <div>
+      <div class="skills-grid">
+        <div class="skill-group">
+          <h4>Firmware</h4>
+          <div class="skill-tags">
+            <span class="tag">C / C++</span>
+            <span class="tag">UART</span>
+            <span class="tag">CAN Bus</span>
+            <span class="tag">ROS2</span>
+            <span class="tag">VESC</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h4>Hardware</h4>
+          <div class="skill-tags">
+            <span class="tag">PCB Design</span>
+            <span class="tag">BLDC Control</span>
+            <span class="tag">Li-Ion Packs</span>
+            <span class="tag">Soldering</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h4>Robotics</h4>
+          <div class="skill-tags">
+            <span class="tag">Kinematics</span>
+            <span class="tag">DH Params</span>
+            <span class="tag">Autonomy</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h4>Digital Design</h4>
+          <div class="skill-tags">
+            <span class="tag">VHDL</span>
+            <span class="tag">SystemVerilog</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" style="max-width:1200px">
+  <div class="section-label">02 — Projects</div>
+  <h2>What I've Built</h2>
+  <div class="projects-grid">
+
+    <!-- PROJECT 1: Electric Skateboard -->
+      <div class="project-card" onclick="window.location.href='skateboard.html'">
+        <div class="project-img">
+          <img src="images/skateboard_cover.jpeg" alt="Electric Skateboard">
+        </div>
+        <div class="project-content">
+          <div class="project-tags">
+            <span class="project-tag">Power Electronics</span>
+            <span class="project-tag">Firmware</span>
+            <span class="project-tag">CAN</span>
+          </div>
+          <h3>Custom Electric Skateboard</h3>
+          <p>
+            Designed and built a dual-BLDC electric skateboard from scratch. 
+            12S4P Li-ion pack, dual VESC motor controllers linked via CAN bus 
+            for synchronized torque delivery and real-time telemetry.
+          </p>
+          <div class="project-links">
+            <a href="skateboard.html" class="project-link" style="font-size: 0.9rem;">More Details↗</a>
+          </div>
+        </div>
+      </div>
+
+    <!-- PROJECT 2: Line Follower -->
+    <div class="project-card">
+      <div class="project-img">
+        <img src="images/line_follower_robot.jpg" alt="Line Follower Robot" style="object-fit: cover; object-position: center 25%;">
+      </div>
+      <div class="project-content">
+        <div class="project-tags">
+          <span class="project-tag">Arduino</span>
+          <span class="project-tag">Embedded</span>
+          <span class="project-tag">Controls</span>
+        </div>
+        <h3>Line Follower Robot</h3>
+        <p>
+          Autonomous line-following robot built on Arduino. 
+          Implemented PID control for smooth, high-speed path tracking 
+          using IR sensor array feedback.
+        </p>
+        <div class="project-links">
+          <!--<a href="#" class="project-link">↗ GitHub</a> 
+          <a href="#" class="project-link"> Details↗</a> -->
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 3: Delivery Robot -->
+    <div class="project-card">
+      <div class="project-img">
+      <img src="images/autonomous_delivery_robot.jpg" alt="Autonomous Delivery Robot" style="object-fit: cover; object-position: center center;">
+      </div>
+      <div class="project-content">
+        <div class="project-tags">
+          <span class="project-tag">ROS2</span>
+          <span class="project-tag">Autonomy</span>
+          <span class="project-tag">Robotics</span>
+        </div>
+        <h3>Autonomous Delivery Robot</h3>
+        <p>
+          Autonomous ground vehicle designed for last-mile delivery. 
+          Built on ROS2 with onboard sensing, path planning, 
+          and obstacle avoidance.
+        </p>
+        <div class="project-links">
+          <!--<a href="#" class="project-link">↗ GitHub</a>
+          <a href="#" class="project-link">→ Details</a> -->
+        </div>
+      </div>
+    </div>
+
+      <!-- PROJECT 4: Ride-On Electric Car -->
+    <div class="project-card">
+      <div class="project-img">
+      <img src="images/electric-car.jpg" alt="Ride-on electric car" style="object-fit: cover; object-position: center 60%;">
+    </div>
+    <div class="project-content">
+    <div class="project-tags">
+      <span class="project-tag">Fabrication</span>
+      <span class="project-tag">Power Electronics</span>
+      <span class="project-tag">Metalworking</span>
+    </div>
+      <h3>Ride-On Electric Car [WIP]</h3>
+    <p>
+      After retiring my electric skateboard (and a titanium pin in my pinky), I rebuilt a 
+      non-functional kids' Lamborghini Revuelto into an adult-rideable vehicle. 
+      Extended the rear skateboard truck to fit the wheelbase using a diamond tooth saw and 
+      cobalt drill bits, reinforced the chassis with steel axles and a repurposed deck, and 
+      rewired the 12V accessory system via splicing and soldering.
+    </p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">03 — Contact</div>
+  <h2>Let's Work Together</h2>
+  <p>
+    Looking for internship and co-op opportunities in robotics, embedded systems,
+    or power electronics. Open to full-time roles starting May or September 2026.
+    Feel free to reach out.
+  </p>
+  <div class="contact-links">
+    <a href="https://mail.google.com/mail/?view=cm&to=evan.applebaum@queensu.ca" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Email Me</a>
+    <a href="https://linkedin.com/in/evanapplebaum" target="_blank" rel="noopener noreferrer" class="btn btn-outline">LinkedIn</a>
+    <a href="https://github.com/evanapplebaum" target="_blank" rel="noopener noreferrer" class="btn btn-outline">GitHub</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Evan Applebaum</span>
+  <span>Built with HTML / CSS / JS</span>
+</footer>
+
+</body>
+</html>

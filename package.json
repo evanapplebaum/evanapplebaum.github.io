@@ -1,0 +1,24 @@
+{
+  "name": "evanapplebaum-portfolio",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "new": "node scripts/new-project.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/evanapplebaum/evanapplebaum.github.io.git"
+  },
+  "bugs": {
+    "url": "https://github.com/evanapplebaum/evanapplebaum.github.io/issues"
+  },
+  "homepage": "https://github.com/evanapplebaum/evanapplebaum.github.io#readme",
+  "dependencies": {
+    "astro": "^7.3.5",
+    "marked": "^18.0.14"
+  },
+  "type": "module",
+  "private": true
+}
